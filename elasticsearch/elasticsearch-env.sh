@@ -3,4 +3,4 @@ if [ -z "${ELASTICSEARCH_HOME}" ]; then
 fi
 
 export ELASTICSEARCH_PID="${ELASTICSEARCH_PID:-"${ELASTICSEARCH_HOME}/pid"}"
-#export ES_HEAP_SZE="${ES_HEAP_SIZE:-"16g"}"
+export ES_HEAP_SIZE="${ES_HEAP_SIZE:-"16g"}"
