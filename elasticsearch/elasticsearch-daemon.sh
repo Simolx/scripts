@@ -23,9 +23,19 @@ function start() {
     "${ELASTICSEARCH_HOME}"/bin/elasticsearch -d -p "${ELASTICSEARCH_PID}"/elasticsearch.pid
     exit 0
   else
-    echo "elasticsearch pid file ${ELASTICSEARCH_PID}/elasticsearch.pid is already exists."
-    echo "pid `cat ${ELASTICSEARCH_PID}/elasticsearch.pid`"
-    exit 1
+    curPid=`cat ${ELASTICSEARCH_PID}/elasticsearch.pid`
+    status=`jps| grep "$curPid Elasticsearch"`
+    if [ "$?" = "0" ]; then
+      echo "elasticsearch process is already started."
+      echo "pid `cat ${ELASTICSEARCH_PID}/elasticsearch.pid`"
+      exit 0
+    else
+      echo "elasticsearch process is stopped, but pid file ${ELASTICSEARCH_PID}/elasticsearch.pid is already exists."
+      "${ELASTICSEARCH_HOME}"/bin/elasticsearch -d -p "${ELASTICSEARCH_PID}"/elasticsearch.pid
+      sleep 1
+      echo "pid `cat ${ELASTICSEARCH_PID}/elasticsearch.pid`"
+      exit 0
+    fi
   fi
 }
 
@@ -49,3 +59,4 @@ case "${1}" in
   *)
     echo ${USAGE}
 esac
+
